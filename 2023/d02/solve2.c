@@ -1,22 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   solve.c                                            :+:      :+:    :+:   */
+/*   solve2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: msloot <msloot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/02 16:50:51 by msloot            #+#    #+#             */
-/*   Updated: 2023/12/02 16:59:41 by msloot           ###   ########.fr       */
+/*   Created: 2023/12/06 19:16:48 by msloot            #+#    #+#             */
+/*   Updated: 2023/12/06 19:22:51 by msloot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "d02.h"
 
-bool	is_game_possible(t_cubes game)
+size_t	power(t_cubes game)
 {
-	if (game.red > 12 || game.gre > 13 || game.blu > 14)
-		return (false);
-	return (true);
+	return (game.red * game.gre * game.blu);
 }
 
 size_t	solve(t_cubes games[], size_t size)
@@ -28,8 +26,7 @@ size_t	solve(t_cubes games[], size_t size)
 	ret = 0;
 	while (i < size)
 	{
-		if (is_game_possible(games[i]))
-			ret += i + 1;
+		ret += power(games[i]);
 		i++;
 	}
 	return (ret);
