@@ -28,11 +28,8 @@ for i, l in enumerate(lines):
 	print(f"\t\x1b[1;35m{sum}\x1b[0m", end='\t')
 
 	for x in range(1, match + 1):
-		if (i + x < len(amount_table)):
-			amount_table[i + x] += (1 * amount_table[i])
-			print(f"{i + x}", end='-')
-		else:
-			break
+		amount_table[i + x] += (1 * amount_table[i])
+		print(f"{i + x}", end='-')
 	print()
 
 print(sum)
