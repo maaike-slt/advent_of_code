@@ -6,58 +6,71 @@
 /*   By: msloot <msloot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/02 16:50:51 by msloot            #+#    #+#             */
-/*   Updated: 2023/12/06 20:00:20 by msloot           ###   ########.fr       */
+/*   Updated: 2023/12/11 19:32:22 by msloot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "d03.h"
 
-#define DEF "\033[0m"
-
-#define NUM	"\033[1;32m"
-#define H_NUM "\033[1;32;44m"
-
-#define SYM	"\033[1;31m"
-
-bool	is_symbol(char c)
+static void	pretty_print_symbol(char c)
 {
-	return (!ft_isalnum(c) && c != '.');
+	ft_putstr(SYM);
+	ft_putchar(c);
+	ft_putstr(DEF);
 }
 
-void	pretty_print(char c)
+static void	pretty_print_number(
+	t_engine *e, size_t y, size_t *x, bool is_engine_part)
 {
-	if (is_symbol(c))
-	{
-		ft_putstr(SYM);
-		ft_putchar(c);
-		ft_putstr(DEF);
-	}
-	else if (ft_isdigit(c))
-	{
+	if (is_engine_part)
 		ft_putstr(NUM);
-		ft_putchar(c);
-		ft_putstr(DEF);
+	while (ft_isdigit(e->engine[y][*x]))
+	{
+		ft_putchar(e->engine[y][*x]);
+		*x += 1;
 	}
-	else
-		ft_putchar(' ');
+	if (is_engine_part)
+		ft_putstr(DEF);
+	*x -= 1;
 }
 
-size_t	solve(char *engine[], size_t size)
+static size_t	process(t_engine *e, size_t y, size_t *x)
 {
-	size_t	x;
-	size_t	y;
+	ssize_t	n;
 
-	x = 0;
-	while (x < size)
+	n = parse_engine_part(e, y, *x);
+	if (n < 0)
 	{
-		y = 0;
-		while (engine[x][y] != '\0')
+		pretty_print_number(e, y, x, false);
+		return (0);
+	}
+	pretty_print_number(e, y, x, true);
+	return (n);
+}
+
+size_t	solve(t_engine *e)
+{
+	size_t	ret;
+	size_t	y;
+	size_t	x;
+
+	ret = 0;
+	y = 0;
+	while (y < e->size)
+	{
+		x = 0;
+		while (e->engine[y][x] != '\0')
 		{
-			pretty_print(engine[x][y]);
-			y++;
+			if (ft_isdigit(e->engine[y][x]))
+				ret += process(e, y, &x);
+			else if (is_symbol(e->engine[y][x]))
+				pretty_print_symbol(e->engine[y][x]);
+			else
+				ft_putchar(e->engine[y][x]);
+			x++;
 		}
 		ft_putchar('\n');
-		x++;
+		y++;
 	}
-	return (0);
+	return (ret);
 }
