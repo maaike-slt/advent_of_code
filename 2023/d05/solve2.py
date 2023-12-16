@@ -22,7 +22,15 @@ seed, *M = section
 name, *seed = seed.split()
 print(f"""\x1b[1;34m{name}\x1b[0m
 \x1b[1;35m{' '.join(seed)}\x1b[0m""")
-seed = map(int, seed)
+seed = list(map(int, seed))
+
+tmp = []
+i = 0
+while i < len(seed):
+	for x in range(seed[i + 1]):
+		tmp.append(seed[i] + x)
+	i += 2
+seed = tmp
 
 def map_seed(m: str, seed: List[int]):
 	name, *L = m.split('\n')
